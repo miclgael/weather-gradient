@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       min: 0,
-      max: 255,
+      max: 50,
     };
   },
   methods: {
@@ -28,20 +28,18 @@ export default {
         )
           .then((res) => res.json())
           .then((data) => {
-            this.min = data.main.temp_min;
-            this.max = data.main.temp_max;
+            this.min = Math.round(data.main.temp_min);
+            this.max = Math.round(data.main.temp_max);
           });
       } else {
-        this.min = mockData.main.temp_min || 0;
-        this.max = mockData.main.temp_max || 40;
+        this.min = Math.round(mockData.main.temp_min);
+        this.max = Math.round(mockData.main.temp_max);
       }
     },
   },
   computed: {
     gradientRGB() {
-      const min = Math.round(this.min);
-      const max = Math.round(this.max);
-      return `rgb(${min},125,125),rgb(255,${max},125)`;
+      return `rgb(${this.min},125,125),rgb(255,${this.max},125)`;
     },
   },
   mounted() {
@@ -70,10 +68,10 @@ body {
 }
 .temp {
   display: block;
+  padding: 1rem;
   position: fixed;
   bottom: 1rem;
   border: 2px solid white;
-  padding: 1rem;
 }
 .temp--min {
   left: 1rem;
